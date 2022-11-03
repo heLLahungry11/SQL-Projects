@@ -1,0 +1,140 @@
+--Its giving each activity a unique identifier 
+Create Table Activity( 
+ActivityName        char(25) Not Null,
+ActivityID          integer   Constraint PK_ACTIVITY PRIMARY KEY);
+
+Insert into Activity Values
+('Weights' ,'01');
+Insert into Activity Values
+('Yoga', '02');
+Insert into Activity Values
+('Swimming', '03');
+Insert into Activity Values
+('Sauna', '04');
+Insert into Activity Values
+('Physical Therapy', '05');
+Commit;
+
+--Its organizing the all the different Package_Type's into unique Package_Type's 
+Create Table Package_Type
+(
+Package_TypeName 	Char(10),
+Package_TypeID     Varchar2(15) Constraint PK_Package_Type PRIMARY KEY);
+
+Insert into Package_Type values
+('Trial', 'TRI');
+Insert into Package_Type values
+('Basic', 'BA');
+Insert into Package_Type values
+('VIP', 'VIP');
+Insert into Package_Type values
+('All Access', 'AA');
+
+--It species Activity's that contain in each Package_Type 
+Create Table Package_Activity_Type(
+ActivityID integer CONSTRAINT FK_ActivityID REFERENCES Activity(ActivityID),
+Package_TypeID varchar2(15) CONSTRAINT FK_Package_TypeID REFERENCES Package_Type(Package_TypeID));
+
+Insert into Package_Activity_type values
+('01', 'TRI');
+Insert into Package_Activity_type values
+('01', 'BA');
+Insert into Package_Activity_type values
+('02', 'BA');
+Insert into Package_Activity_type values
+('01', 'VIP');
+Insert into Package_Activity_type values
+('02', 'VIP');
+Insert into Package_Activity_type values
+('03', 'VIP');
+Insert into Package_Activity_type values
+('01', 'AA');
+Insert into Package_Activity_type values
+('02', 'AA');
+Insert into Package_Activity_type values
+('03', 'AA');
+Insert into Package_Activity_type values
+('04', 'AA');
+Insert into Package_Activity_type values
+('05', 'AA');
+
+
+--It gives each Gym a unique Identifier
+Create Table GYM (  
+GymID           integer Constraint PK_GYM PRIMARY KEY,  
+GymAddress      Varchar2(50) CONSTRAINT NN_GymAddress NOT NULL,
+GymTown 	    	Varchar2(50) Not Null,
+GymState		Varchar2(2) Not Null,
+GymZipCode 	    Varchar2(6) Not Null);
+
+Insert into Gym Values
+('01', '626 Danbury Rd', 'Ridgefield', 'CT', '06877');
+Insert into Gym Values
+('02', '128 Katonah Ave', 'Northampton', 'MA', '01062');
+
+--Organizes the each of the Customer's information to make it unique
+Create Table Customer (
+Customer_ID         varchar2(2)       Not Null, 
+CustomerName        varchar2(30)    Not Null,   
+CustomerAddress     varchar2(100)   Not Null,  
+CustomerEmail       varchar2(30),     
+CustomerPhone       varchar2(13),
+GymID         	    integer Null,
+Constraint PK_Customer PRIMARY KEY (Customer_ID),
+CONSTRAINT FK_GymID  FOREIGN KEY (GymID) REFERENCES Gym(GymID));
+
+ Insert into Customer Values
+ ('05', 'Carol Killian', '404 Old Sib Rd', 'Ckillian@hotmail.com', '203-885-2078', '01');
+ Insert into Customer Values
+ ('61', 'John Bowe', '12 Fox Hill Lane', 'JBowe@outlook.com', '203-885-6298', '01');
+ Insert into Customer Values
+ ('10', 'Philip James', '288 Valley St', 'PJames12@gmail.com', '917-451-6298', '02');
+ Insert into Customer Values
+ ('02', 'Michael Kennedy', '10 Knights Crescent St', 'MKennedy88@hotmail.com', '914-613-4261', '01');
+ Insert into Customer Values
+ ('21', 'Orla McCain', '5 Farmington Lane', 'LMcgrath31@outlook.com', '203-391-4851', '02');
+ Insert into Customer Values
+ ('41', 'John Doe', '15 Farmingville Ave', 'Johndoe15@gmail.com', '860-342-6712', '01');
+ Insert into Customer Values
+ ('08', 'Clodagh Ryan', '14 Georgetown Rd', 'CRyan01@msn.com', '203-689-8856', '02');
+ Insert into Customer Values
+ ('32', 'Zach Smith', '88 Lake Ave', 'ZachSmith251@hotmail.com', '203-765-9061', '01');
+ Commit;
+
+
+--The Customer_Package Organizes the Customers into the Package_Type they chose with a begin date, end date, cost of their unique package  
+Create Table Customer_Package(   
+Customer_ID 	varchar2(2),      
+Package_TypeID  varchar2(15),  
+Begin_Date          date,   
+End_Date            date,   
+Package_Cost        varchar2(6),
+CONSTRAINT Customer_Package_PK Primary Key (Customer_ID, Package_Typeid),
+CONSTRAINT FK_CustomerID FOREIGN KEY (Customer_ID) REFERENCES Customer(Customer_ID), 
+CONSTRAINT FK_Package1_TypeID FOREIGN KEY (Package_TypeID) REFERENCES Package_Type(Package_TypeID)); 
+
+ Insert into Customer_Package Values
+ ('05', 'AA', TO_DATE('2020/12/15', 'yyyy/mm/dd'), TO_DATE('2021/12/15', 'yyyy/mm/dd'), '200');
+ Insert into Customer_Package Values
+ ('61', 'VIP', TO_DATE('2020/11/13', 'yyyy/mm/dd'), TO_DATE('2021/11/13', 'yyyy/mm/dd'), '150');
+ Insert into Customer_Package Values
+ ('10', 'BA', TO_DATE('2020/12/20', 'yyyy/mm/dd'), TO_DATE('2021/12/21', 'yyyy/mm/dd'), '100');
+ Insert into Customer_Package Values
+ ('02', 'TRI', TO_DATE('2020/09/20', 'yyyy/mm/dd'), TO_DATE('2021/09/22', 'yyyy/mm/dd'), '0');
+ Insert into Customer_Package Values
+ ('21', 'TRI', TO_DATE('2021/09/15', 'yyyy/mm/dd'), TO_DATE('2021/09/21', 'yyyy/mm/dd'), '0');
+ Insert into Customer_Package Values
+ ('41', 'VIP', TO_DATE('2020/07/12', 'yyyy/mm/dd'), TO_DATE('2021/07/12', 'yyyy/mm/dd'), '150');
+  Insert into Customer_Package Values
+ ('08', 'BA', TO_DATE('2020/06/03', 'yyyy/mm/dd'), TO_DATE('2021/06/03', 'yyyy/mm/dd'), '100');
+ Insert into Customer_Package Values
+ ('32', 'AA', TO_DATE('2021/03/15', 'yyyy/mm/dd'), TO_DATE('2021/03/15', 'yyyy/mm/dd'), '200');
+Commit;
+
+
+
+
+
+
+
+
